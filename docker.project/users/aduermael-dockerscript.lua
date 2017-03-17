@@ -1,0 +1,2 @@
+-- This Dockerscript can be used to define user specific commands. 
+-- Variables and functions defined here will override the ones defined for all users.
