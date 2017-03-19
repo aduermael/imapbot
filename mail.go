@@ -15,6 +15,19 @@ import (
 	"github.com/mxk/go-imap/imap"
 )
 
+func (m *Mail) Delete() error {
+	if m.uid == 0 {
+		return errors.New("uid == 0")
+	}
+	m.client.c.Select(m.mailbox.Name, false)
+	m.client.c.Check()
+	set, _ := imap.NewSeqSet("")
+	set.AddNum(m.uid)
+	report(m.client.c.UIDStore(set, "+FLAGS.SILENT", imap.NewFlagSet(`\Deleted`)))
+	report(m.client.c.Expunge(set))
+	return nil
+}
+
 // DownloadAll downloads all email content
 func (m *Mail) DownloadAll() error {
 	return errors.New("work in progress")

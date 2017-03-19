@@ -27,12 +27,17 @@ func TestMain(t *testing.T) {
 		}
 		for _, mail := range mails {
 			if mail.Subject == "Votre export des contributions pour le projet comme-convenu-2" {
-				fmt.Println("FOUND IT! ->", mail.Subject)
+				fmt.Println("FOUND IT! ->", mail.Subject, mail.uid)
 				err := mail.LoadParts("")
 				if err != nil {
 					printFatal(err)
 				}
 				mail.PrintParts()
+				err = mail.Delete()
+				if err != nil {
+					printFatal(err)
+				}
+				break
 			}
 		}
 	}
